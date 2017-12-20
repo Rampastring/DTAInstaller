@@ -10,11 +10,18 @@ namespace DTAInstaller
     public partial class Form1 : Form
     {
         private const string INSTALLER_ZIP_NAME = "Installer.zip";
+        private const string PRODUCT_NAME = "Dawn of the Tiberium Age";
+
+        /// <summary>
+        /// The filename of the executable that is run when the installation is complete.
+        /// If the desktop shortcut is created, the shortcut is also made to point at this file.
+        /// </summary>
+        private const string PRODUCT_EXECUTABLE = "DTA.exe";
 
         public Form1()
         {
             InitializeComponent();
-            tbInstallationDir.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + "Dawn of the Tiberium Age";
+            tbInstallationDir.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + Path.DirectorySeparatorChar + PRODUCT_NAME;
         }
 
         private void btnAbort_Click(object sender, EventArgs e)
@@ -91,17 +98,17 @@ namespace DTAInstaller
             {
                 object shDesktop = (object)"Desktop";
                 WshShell shell = new WshShell();
-                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + Path.DirectorySeparatorChar + "Dawn of the Tiberium Age.lnk";
+                string shortcutAddress = (string)shell.SpecialFolders.Item(ref shDesktop) + Path.DirectorySeparatorChar + PRODUCT_NAME + ".lnk";
                 IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutAddress);
-                shortcut.Description = "Play Dawn of the Tiberium Age";
-                shortcut.TargetPath = tbInstallationDir.Text + Path.DirectorySeparatorChar + "DTA.exe";
+                shortcut.Description = "Play " + PRODUCT_NAME;
+                shortcut.TargetPath = tbInstallationDir.Text + Path.DirectorySeparatorChar + PRODUCT_EXECUTABLE;
                 shortcut.WorkingDirectory = tbInstallationDir.Text;
                 shortcut.Save();
             }
 
             System.IO.File.Delete(destDir + INSTALLER_ZIP_NAME);
 
-            ProcessStartInfo startInfo = new ProcessStartInfo(destDir + "DTA.exe");
+            ProcessStartInfo startInfo = new ProcessStartInfo(destDir + PRODUCT_EXECUTABLE);
             startInfo.WorkingDirectory = destDir;
             Process.Start(startInfo);
             Application.Exit();
