@@ -55,7 +55,10 @@ namespace DTAInstaller
                 foreach (char character in tbInstallationDir.Text)
                 {
                     if (invalidChar == character)
+                    {
                         MessageBox.Show("Your directory path has invalid characters in it.", "Invalid directory");
+                        return;
+                    } 
                 }
             }
 
